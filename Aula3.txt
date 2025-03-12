@@ -1,6 +1,35 @@
-teste 
 
-comando select 
 
-Comando UPDATE
+--selecionar todos os medicos
+SELECT *
+FROM medicos;
 
+SELECT nome, idade
+FROM medicos;
+
+SELECT *
+FROM medicos
+WHERE idade > 30
+or especialidade = 'pediatria';
+
+SELECT count(*)
+from medicos;
+
+select max(idade)
+from medicos;
+
+select avg(idade)
+from medicos;
+
+select sum(idade)
+from medicos;
+
+select especialidade
+from medicos;
+
+select distinct especialidade
+from medicos;
+
+select idade
+from medicos
+order by idade asc;
