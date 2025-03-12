@@ -2,5 +2,5 @@ teste
 
 comando select 
 
-enter
+Comando UPDATE
 
