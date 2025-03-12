@@ -1,3 +1,6 @@
 teste 
 
-comando select
+comando select 
+
+enter
+
