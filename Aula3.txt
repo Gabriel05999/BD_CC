@@ -1,6 +1,5 @@
 
-
---selecionar todos os medicos
+-- selecionar todos os medicos
 SELECT *
 FROM medicos;
 
@@ -8,8 +7,8 @@ SELECT nome, idade
 FROM medicos;
 
 SELECT *
-FROM medicos
-WHERE idade > 30
+FROM
+idade > 30
 or especialidade = 'pediatria';
 
 SELECT count(*)
@@ -33,3 +32,67 @@ from medicos;
 select idade
 from medicos
 order by idade asc;
+
+select *
+from medicos
+where cidade
+	in ( 'Florianopolis' , 'Joinvile' );
+    
+select *
+from medicos as m, consultas as c
+where m.codm = c.codm and especialidade
+	in('ortopedia' , 'pediatria');
+
+select *
+from medicos as m
+join consultas as c on m.codm = c.codm;
+
+select nome, cpf, idade
+from medicos
+union
+select nome, cpf, idade
+from funcionarios;
+
+-- EXERCICIOS 
+
+select nome, cpf
+from medicos
+where idade < 40 or especialidade != 'traumatologia';
+
+select *
+from consultas 
+where hora > '12:00' and data > '2006-06-19';
+
+select idade, nome, cidade
+from pacientes
+where cidade != 'Florianopolis';
+
+select *
+from consultas
+where data < '2024-06-14' or data > '2024-12-20';
+
+select nome, (idade * 12)
+from pacientes;
+
+select cidade
+from funcionarios;
+
+select max(salario) , min(salario)
+from funcionarios
+where cidade = 'florianopolis';
+
+select min(hora)
+from consultas
+where data = '2024-06-14';
+
+select avg(idade), count(nroa)
+from medicos;
+
+select codf, nome, (salario - (salario * 0.2))
+from funcionarios;
+
+select nome
+from funcionarios
+where nome like '%a';
+
+select nome, cpf
