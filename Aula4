@@ -38,3 +38,22 @@ left join movies as m on m.director_id = d.id;
 select * 
 from movies as m
  left join directors as d on d.id = m.director_id;
+
+-- EX 6
+select *
+from movies as m
+join directors as d on m.director_id = d.id
+join tickets as t on t.movie_id = id;
+
+	-- EX 7
+select *
+from movies as m
+join tickets as t on t.movie_id = m.id
+right join directors as d on m.director_id = d.id;
+
+	-- EX 8
+select *
+from movies as m
+left join tickets as t on m.id = t.movie_id
+left join directors as d on d.id = m.director_id
+where t.id is null;
