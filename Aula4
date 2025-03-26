@@ -1,0 +1,40 @@
+select * -- LEFT JOING
+from movies as m
+	left join directors as d
+		on m.director_id = d.id;
+        
+select * -- RIGHT JOING
+from movies as m
+	right join directors as d
+		on m.director_id = d.id;
+
+--------------------------------------------------------
+-- EXERCICIO 
+
+	-- EX 1
+select * 
+from movies as m
+	right join directors as d
+		on m.director_id = d.id;
+        
+	-- EX 2
+select *
+from movies as m
+	left join tickets as t
+		on t.movie_id = m.id;
+
+	-- EX 3
+select *
+from movies as m
+	join directors as d on d.id = m.director_id
+	join tickets as t on m.id = t.movie_id;
+    
+	-- EX 4
+select d.name, m.name
+from directors as d
+left join movies as m on m.director_id = d.id;
+
+	-- EX 5
+select * 
+from movies as m
+ left join directors as d on d.id = m.director_id;
