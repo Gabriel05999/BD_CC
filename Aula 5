@@ -27,9 +27,9 @@ from produtos;
 
 -- EX 5*
 
-select nome, cliente id
-from clientes, pedidos
-group by nome;
+select nome, produto_id
+from clientes, pedidos;
+
 
 -- EX 6
 
@@ -40,16 +40,16 @@ from pedidos, produtos;
 -- EX 7
 
 select nome,
-	max(preco)
+	max(preco) as preco
 from produtos
-group by nome;
+group by nome order by preco limit 1;
 
 -- EX 8
 
 select nome,
-	min(estoque)
+	min(estoque) as estoque
 from produtos
-group by nome;
+group by nome order by estoque limit 1;
 
 -- EX 9
 
