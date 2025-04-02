@@ -1,0 +1,57 @@
+-- Exemplo 
+
+select nome,
+	count(nome)
+from clientes
+group by nome;
+
+-- EX 1
+
+select count(*)
+from clientes;
+
+-- EX 2
+
+select count(*)
+from pedidos;
+
+-- EX 3
+
+select sum(quantidade)
+from pedidos;
+
+-- EX 4
+
+select avg(preco)
+from produtos;
+
+-- EX 5*
+
+select nome, cliente id
+from clientes, pedidos
+group by nome;
+
+-- EX 6
+
+select cliente_id
+from pedidos, produtos;
+
+
+-- EX 7
+
+select nome,
+	max(preco)
+from produtos
+group by nome;
+
+-- EX 8
+
+select nome,
+	min(estoque)
+from produtos
+group by nome;
+
+-- EX 9
+
+select count(pedidos)
+from pedidos;
