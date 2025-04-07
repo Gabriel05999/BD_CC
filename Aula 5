@@ -1,57 +1,155 @@
--- Exemplo 
+--  Contar o número total de clientes
 
-select nome,
-	count(nome)
-from clientes
-group by nome;
+SELECT COUNT(*) AS total_clientes
+FROM clientes;
 
--- EX 1
+-- Contar o número total de pedidos
 
-select count(*)
-from clientes;
+SELECT COUNT(*) AS total_pedidos
+FROM pedidos;
 
--- EX 2
+--  Calcular o valor total de todos os pedidos
 
-select count(*)
-from pedidos;
+SELECT SUM(p.quantidade * pr.preco) AS valor_total_pedidos
+FROM pedidos p 
+JOIN produtos pr ON pr.produto_id = p.id;
 
--- EX 3
+--  Calcular a média de preço dos produtos
 
-select sum(quantidade)
-from pedidos;
+SELECT AVG(preco) AS media_preco_produtos
+FROM produtos;
 
--- EX 4
+--  Listar todos os clientes e seus pedidos
 
-select avg(preco)
-from produtos;
-
--- EX 5*
-
-select nome, produto_id
-from clientes, pedidos;
+SELECT c.nome, p.id_pedido, p.data_pedido
+FROM clientes c
+LEFT JOIN pedidos p ON c.id_cliente = p.id_cliente;
 
 
--- EX 6
 
-select cliente_id
-from pedidos, produtos;
+--  Listar todos os pedidos e seus produtos, incluindo pedidos sem produtos
+
+SELECT p.id_pedido, pr.nome AS produto, ip.quantidade
+FROM pedidos p
+LEFT JOIN itens_pedido ip ON p.id_pedido = ip.id_pedido
+LEFT JOIN produtos pr ON ip.id_produto = pr.id_produto;
+
+--  Listar os produtos mais caros primeiro
+
+SELECT nome, preco
+FROM produtos
+ORDER BY preco DESC;
+
+--  Listar os produtos com menor estoque
+
+SELECT nome, estoque
+FROM produtos
+ORDER BY estoque ASC;
+
+--  Contar quantos pedidos foram feitos por cliente
+
+SELECT c.nome, COUNT(p.id_pedido) AS total_pedidos
+FROM clientes c
+LEFT JOIN pedidos p ON c.id_cliente = p.id_cliente
+GROUP BY c.id_cliente;
+
+--  Contar quantos produtos diferentes foram vendidos
+
+SELECT COUNT(DISTINCT ip.id_produto) AS total_produtos_vendidos
+FROM itens_pedido ip;
+
+--  Mostrar os clientes que não realizaram pedidos
+
+--  Mostrar os produtos que nunca foram vendidos
+
+--  Contar o número de pedidos feitos por dia
+
+SELECT DATE(data_pedido) AS data, COUNT(id_pedido) AS total_pedidos
+FROM pedidos
+GROUP BY DATE(data_pedido)
+ORDER BY data DESC;
+
+--  Listar os produtos mais vendidos
+
+SELECT pr.nome, SUM(ip.quantidade) AS total_vendas
+FROM itens_pedido ip
+JOIN produtos pr ON ip.id_produto = pr.id_produto
+GROUP BY pr.id_produto
+ORDER BY total_vendas DESC;
 
 
--- EX 7
+--  Encontrar o cliente que mais fez pedidos
 
-select nome,
-	max(preco) as preco
-from produtos
-group by nome order by preco limit 1;
+SELECT c.nome, COUNT(p.id_pedido) AS total_pedidos
+FROM clientes c
+JOIN pedidos p ON c.id_cliente = p.id_cliente
+GROUP BY c.id_cliente
+ORDER BY total_pedidos DESC
+LIMIT 1;
 
--- EX 8
+--  Listar os pedidos e os clientes que os fizeram, incluindo pedidos sem clientes
 
-select nome,
-	min(estoque) as estoque
-from produtos
-group by nome order by estoque limit 1;
+SELECT p.id_pedido, c.nome AS cliente
+FROM pedidos p
+LEFT JOIN clientes c ON p.id_cliente = c.id_cliente;
 
--- EX 9
+--  Listar os produtos e o total de vendas por produto
 
-select count(pedidos)
-from pedidos;
+SELECT pr.nome, SUM(ip.quantidade) AS total_vendas
+FROM itens_pedido ip
+JOIN produtos pr ON ip.id_produto = pr.id_produto
+GROUP BY pr.id_produto
+ORDER BY total_vendas DESC;
+
+--  Calcular a média de quantidade de produtos por pedido
+
+--  Listar os pedidos ordenados por data (mais recentes primeiro)
+
+SELECT id_pedido, data_pedido
+FROM pedidos
+ORDER BY data_pedido DESC;
+
+--  Contar quantos clientes possuem telefone cadastrado
+
+SELECT COUNT(*) AS total_clientes_com_telefone
+FROM clientes
+WHERE telefone IS NOT NULL;
+
+--  Encontrar o cliente que gastou mais dinheiro em pedidos.
+
+SELECT c.nome, SUM(p.total) AS total_gasto
+FROM clientes c
+JOIN pedidos p ON c.id_cliente = p.id_cliente
+GROUP BY c.id_cliente
+ORDER BY total_gasto DESC
+LIMIT 1;
+
+-- Listar os 5 produtos mais vendidos.
+
+SELECT pr.nome, SUM(ip.quantidade) AS total_vendas
+FROM itens_pedido ip
+JOIN produtos pr ON ip.id_produto = pr.id_produto
+GROUP BY pr.id_produto
+ORDER BY total_vendas DESC
+LIMIT 5;
+
+-- Listar os clientes que já fizeram pedidos e o número de pedidos de cada um.
+
+SELECT c.nome, COUNT(p.id_pedido) AS total_pedidos
+FROM clientes c
+JOIN pedidos p ON c.id_cliente = p.id_cliente
+GROUP BY c.id_cliente;
+
+-- Encontrar a data com mais pedidos realizados
+
+SELECT DATE(data_pedido) AS data, COUNT(id_pedido) AS total_pedidos
+FROM pedidos
+GROUP BY DATE(data_pedido)
+ORDER BY total_pedidos DESC
+LIMIT 1;
+
+-- Calcular a média de valor gasto por pedido
+
+SELECT AVG(p.quantidade * pr.preco) AS media_valor_pedido
+FROM pedidos p 
+JOIN produtos pr ON pr.produto_id = p.id;
