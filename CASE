@@ -15,45 +15,46 @@ from clinica.ambulatorios;
 
 -- 1
 
-select status_pagamento,
-	case 
-    when status_pagamento = 'pago' then 'PG'
-    when status_pagamento = 'pendente' then 'PD'
-    when status_pagamento = 'cancelado' then 'C'
-    else  'D'
-end as status_descriçao
-from eventos_db.inscricoes
-join inscriçao as i on e.id = i.id_evento
-join participantes as p on i.id_participantes = p.id;
+SELECT p.nome AS nome_participante, e.nome_evento,eventos
+    CASE 
+        WHEN status_pagamento = 'pago' THEN 'PG'
+        WHEN status_pagamento = 'pendente' THEN 'PD'
+        WHEN status_pagamento = 'cancelado' THEN 'C'
+        ELSE 'D'
+    END AS status_descricao
+FROM Inscricoes i
+JOIN Participantes p ON i.id_participante = p.id
+JOIN Eventos e ON i.id_evento = e.id;
+
 
 -- 2
 
-select data_inicio, data_fim,
+select nome_evento, data_inicio, data_fim,
 	case
-    when datediff(data_inicio, data_fim) then 'Evento de 1 dia'
-	when datediff(data_inicio, data_fim) then 'Evento de curta duraçao'
-    when datediff(data_inicio, data_fim) then 'Evento de longa duraçao'
+    when data_inicio = data_fim then 'Evento de 1 dia'
+	when datediff(data_inicio, data_fim) <= 3 then 'Evento de curta duraçao'
+    ELSE 'Evento de longa duraçao'
 end as classificacao_evento
-from eventos_db.inscricoes,
+from eventos;
 
 -- 3
 
-SELECT inscricao,
+SELECT nome,
     CASE 
 	WHEN YEAR(data_inscricao) < 2024 THEN 'Veterano'
 	ELSE 'Novo'
     END AS tipo_participante
-FROM eventos_db.participantes;
+FROM participantes;
 
 -- 4
 
-select tarefas,
+select nome, cargo,
 case
-when tarefa = 'diretor' then 'Gestor principal'
-when tarefa = 'Supervisor' then 'Coordenador' or 'Supervisor'
+when cargo = 'diretor' then 'Gestor principal'
+when cargo = 'Supervisor' then 'Coordenador' or 'Supervisor'
 else 'Apoio'
 end as funcao
-from eventos_db.organizadores;
+from organizadores;
 
 -- 5
 
@@ -63,14 +64,16 @@ when telefone is not null then 'WhatsApp'
 when telefone is null and email is not null then 'E-mail'
 when telefone is null and email is null then 'Sem conatato disponivel'
 end as prioridade_contato
-from eventos_db.participantes;
+from eventos.participantes;
 
 -- 6
 
-select nome_eventos,
-case 
-when tipo_de_evento = 'corrida' or 'Campeonato' or 'Torneio'
-when tipo_de_evento = 'Oficina' or 'Curso' or 'Palestra'
-else 'Outro'
-end as classificacao_tipo
-from eventos_db.eventos
+SELECT 
+    nome_evento,
+    tipo_evento,
+    CASE 
+        WHEN tipo_evento IN ('Campeonato', 'Corrida', 'Torneio') THEN 'Competição'
+        WHEN tipo_evento IN ('Oficina', 'Curso', 'Palestra') THEN 'Formativo'
+        ELSE 'Outro'
+    END AS classificacao_tipo
+FROM Eventos;
